@@ -1,0 +1,16 @@
+.forms {
+    background: #1c1c1c;
+    height: 80px;
+    display: flex;
+    align-items: center;
+}
+
+.forms>div:first-child {
+    width: 70%;
+    padding: 0 1rem;
+}
+
+.forms>div:last-child {
+    width: 30%;
+    padding-right: 1rem;
+}
