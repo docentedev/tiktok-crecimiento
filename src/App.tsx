@@ -42,12 +42,25 @@ function App() {
     }, ...users])
   }
   const getTopUsers = () => {
-    const sortedUsers = [...users].sort((a, b) => b.points - a.points);
-    const top3Users = sortedUsers.slice(0, 3);
-    const totalPoints = top3Users.reduce((sum, user) => sum + user.points, 0);
+    // Crear un objeto para almacenar los puntos por usuario
+    const pointsByUser: { [key: string]: number} = {};
+
+    // Recorrer el array de usuarios y sumar los puntos para cada usuario
+    users.forEach(user => {
+      if (pointsByUser[user.username]) {
+        pointsByUser[user.username] += user.points;
+      } else {
+        pointsByUser[user.username] = user.points;
+      }
+    });
+    // Convertir el objeto a un array de objetos con username y points
+    const userPointsArray = Object.entries(pointsByUser).map(([username, points]) => ({ username, points }));
+    // Ordenar el array por puntos de forma descendente
+    const sortedUserPoints = userPointsArray.sort((a, b) => b.points - a.points);
+    // Tomar los primeros 3 usuarios (los 3 con más puntos)
+    const top3Users = sortedUserPoints.slice(0, 3);
     const result = {
       topUsers: top3Users,
-      totalPoints: totalPoints,
       lastUser: { ...users[0] },
     };
     return result;
