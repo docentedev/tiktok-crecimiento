@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import styles from './Form.module.css'
-import { Grid, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 
 const Forms = ({ onAddUser }: any) => {
     const [username, setUsername] = useState('');
@@ -16,21 +16,37 @@ const Forms = ({ onAddUser }: any) => {
         setPoints(0);
     }
 
+    const handleUsernameChange = ({ target }: ChangeEvent<HTMLInputElement>) => setUsername(target.value)
+    const handlePointsChange = ({ target }: ChangeEvent<HTMLInputElement>) => setPoints(Number(target.value || '0'))
+
     return (
         <form className={styles.forms} onSubmit={handleSubmit}>
             <div>
-                <TextField value={username} onChange={({ target }) => setUsername(target.value)} fullWidth margin="dense" id="username" label="Usuario" variant="outlined" onKeyPress={(ev) => {
-                    if (ev.key === 'Enter') {
-                        handleSubmit(ev);
-                    }
-                }} />
+                <TextField
+                    value={username}
+                    onChange={handleUsernameChange}
+                    fullWidth
+                    margin="dense"
+                    id="username"
+                    label="Usuario"
+                    variant="outlined"
+                    onKeyPress={(ev) => {
+                        if (ev.key === 'Enter') handleSubmit(ev);
+                    }} />
             </div>
             <div>
-                <TextField type='number' value={points} onChange={({ target }) => setPoints(Number(target.value || '0'))} fullWidth margin="dense" id="points" label="Puntos" variant="outlined" onKeyPress={(ev) => {
-                    if (ev.key === 'Enter') {
-                        handleSubmit(ev);
-                    }
-                }} />
+                <TextField
+                    type='number'
+                    value={points}
+                    onChange={handlePointsChange}
+                    fullWidth
+                    margin="dense"
+                    id="points"
+                    label="Puntos"
+                    variant="outlined"
+                    onKeyPress={(ev) => {
+                        if (ev.key === 'Enter') handleSubmit(ev);
+                    }} />
             </div>
         </form>
     )

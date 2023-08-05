@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
-import './App.css';
+import styles from './App.module.css';
 import Tops from './components/Tops';
 import Users from './components/Users';
 import Forms from './components/Form';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { getData, getTopUsers, setData, userVoid } from './utils';
+import Actions from './components/Actions';
+
+export interface User {
+  username: string;
+  points: number;
+  color: string;
+}
 
 const darkTheme = createTheme({
   palette: {
@@ -13,65 +21,33 @@ const darkTheme = createTheme({
 });
 
 function App() {
-  const [users, setUsers] = useState([{
-    username: 'claudiodeviaje',
-    points: 1550,
-    color: '',
-  }, {
-    username: 'jose_maldo_guitar',
-    points: 1200,
-    color: '',
-  }, {
-    username: 'carlosdsassa',
-    points: 890,
-    color: '',
-  }, {
-    username: 'marianiits_',
-    points: 50,
-    color: '',
-  }, {
-    username: 'marianiits_',
-    points: 50,
-    color: '',
-  }]);
+  const [lastUser, setLastUser] = useState<User>(userVoid);
+  const [users, setUsers] = useState<User[]>(getData());
 
   const handleAddUser = (user: any) => {
-    setUsers([{
+    if (user.points > 0) setLastUser({
       ...user,
       color: '',
-    }, ...users])
-  }
-  const getTopUsers = () => {
-    // Crear un objeto para almacenar los puntos por usuario
-    const pointsByUser: { [key: string]: number} = {};
-
-    // Recorrer el array de usuarios y sumar los puntos para cada usuario
-    users.forEach(user => {
-      if (pointsByUser[user.username]) {
-        pointsByUser[user.username] += user.points;
-      } else {
-        pointsByUser[user.username] = user.points;
-      }
     });
-    // Convertir el objeto a un array de objetos con username y points
-    const userPointsArray = Object.entries(pointsByUser).map(([username, points]) => ({ username, points }));
-    // Ordenar el array por puntos de forma descendente
-    const sortedUserPoints = userPointsArray.sort((a, b) => b.points - a.points);
-    // Tomar los primeros 3 usuarios (los 3 con más puntos)
-    const top3Users = sortedUserPoints.slice(0, 3);
-    const result = {
-      topUsers: top3Users,
-      lastUser: { ...users[0] },
-    };
-    return result;
+    const newUsers = [{ ...user, color: '' }, ...users];
+    setUsers(newUsers);
+    setData(newUsers);
   }
+
+  const handleDeleteData = () => {
+    setUsers([]);
+    setLastUser(userVoid);
+    setData([]);
+  }
+
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <div className="App">
-        <Tops users={getTopUsers()} />
+      <div className={styles.app}>
+        <Tops topUsers={getTopUsers(users)} lastUser={lastUser} />
         <Users users={users} />
         <Forms onAddUser={handleAddUser} />
+        <Actions onDelete={handleDeleteData} />
       </div>
     </ThemeProvider>
   );

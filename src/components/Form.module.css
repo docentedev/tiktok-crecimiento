@@ -3,6 +3,8 @@
     height: 80px;
     display: flex;
     align-items: center;
+    outline: solid #868686 1px;
+    border-radius: 0 0 8px 8px;
 }
 
 .forms>div:first-child {

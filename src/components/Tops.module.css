@@ -1,4 +1,7 @@
 .tops {
-    background: #1c1c1c;
+    background: #121212;
     height: 278.38px;
+    outline: solid #868686 1px;
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
 }
