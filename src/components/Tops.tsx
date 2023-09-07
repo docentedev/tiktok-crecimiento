@@ -1,11 +1,10 @@
 import React from 'react';
 import styles from './Tops.module.css'
-import { Link, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import StarIcon from '@mui/icons-material/Star';
 import AddReactionIcon from '@mui/icons-material/AddReaction';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import { User } from '../App';
 import { userVoid } from '../utils';
+import MainMessage from './MainMessage';
 
 interface TopsProps {
     topUsers: User[];
@@ -31,48 +30,37 @@ const Tops = ({ topUsers, lastUser }: TopsProps) => {
 
     return (
         <div className={styles.tops}>
-            <List
-                sx={{ width: '100%', bgcolor: 'background.paper' }}
-            >
+            <MainMessage />
+            <div>
                 {users.map((user: User, index: number) => (
-                    <ListItem key={index}>
-                        <ListItemButton>
-                            {user.username && user.points > 0 ? (
-                                <>
-                                    <ListItemIcon>
-                                        {user.color !== '' ? (<StarIcon sx={{ color: user.color }} />) : (<AddReactionIcon />)}
-                                    </ListItemIcon>
-                                    <Link
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        href={`https://www.tiktok.com/@${user.username}`}
-                                        style={{
-                                            color: 'white',
-                                            fontSize: '1.4rem',
-                                            fontWeight: '400',
-                                        }}
-                                        underline="hover">
-                                        {user.username}
-                                    </Link>
-                                    <ListItemText style={{
-                                        display: 'flex',
-                                        justifyContent: 'flex-end',
-                                    }} primary={user.points} />
-                                </>
-                            ) : (<>
-                                <ListItemIcon>
-                                   <AutorenewIcon /> 
-                                </ListItemIcon>
-                                <ListItemText style={{
-                                    display: 'flex',
-                                    justifyContent: 'flex-end',
-                                }} primary="" />
-                            </>)}
-                        </ListItemButton>
-                    </ListItem>
+                    <div key={index} className={styles.item}>
+                        {user.username && user.points > 0 ? (
+                            <>
+                                <div className={styles.itemBullet}>
+                                    {user.color !== '' ? (<div className={styles.bullet} style={{ backgroundColor: user.color }}>{index + 1}</div>) : (<AddReactionIcon />)}
+                                </div>
+                                <a
+                                    className={styles.itemLink}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    href={`https://www.tiktok.com/@${user.username}`}
+                                >
+                                    {user.username}
+                                </a>
+                                <div className={styles.itemPoints}>
+                                    {user.points}
+                                </div>
+                            </>
+                        ) : (<>
+                            <div className={styles.itemBullet}>
+                                <AutorenewIcon />
+                            </div>
+                            <div />
+                        </>)}
+                    </div>
                 ))}
-            </List>
-        </div >
+            </div>
+        </div>
     )
 };
 

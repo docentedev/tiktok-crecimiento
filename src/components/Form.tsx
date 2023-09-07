@@ -1,19 +1,21 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useRef, useState } from 'react';
 import styles from './Form.module.css'
-import { TextField } from '@mui/material';
+import { TextField, TextFieldProps } from '@mui/material';
 
 const Forms = ({ onAddUser }: any) => {
     const [username, setUsername] = useState('');
     const [points, setPoints] = useState(0);
-
+    const inputRef  = useRef<any>();
     const handleSubmit = (event: any) => {
         event.preventDefault();
+        if (username === '') return;
         onAddUser({
             username,
             points,
         })
         setUsername('');
         setPoints(0);
+        if (inputRef.current) inputRef.current.focus();
     }
 
     const handleUsernameChange = ({ target }: ChangeEvent<HTMLInputElement>) => setUsername(target.value)
@@ -23,6 +25,7 @@ const Forms = ({ onAddUser }: any) => {
         <form className={styles.forms} onSubmit={handleSubmit}>
             <div>
                 <TextField
+                    inputRef={inputRef}
                     value={username}
                     onChange={handleUsernameChange}
                     fullWidth

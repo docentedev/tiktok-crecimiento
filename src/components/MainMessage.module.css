@@ -1,0 +1,9 @@
+.mainMessage {
+    text-align: center;
+    display: flex;
+    padding: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.3rem;
+    border-bottom: solid 1px #868686;
+}

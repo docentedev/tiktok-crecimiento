@@ -14,6 +14,16 @@ export interface User {
   color: string;
 }
 
+const getLastUser = () => {
+  try {
+    const lastUser = localStorage.getItem('tiktok_crecimiento_user_last');
+    if (lastUser) return JSON.parse(lastUser);
+    return userVoid
+  } catch (error) {
+    return userVoid;
+  }
+}
+
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
@@ -21,14 +31,18 @@ const darkTheme = createTheme({
 });
 
 function App() {
-  const [lastUser, setLastUser] = useState<User>(userVoid);
+  const [lastUser, setLastUser] = useState<User>(getLastUser());
   const [users, setUsers] = useState<User[]>(getData());
 
   const handleAddUser = (user: any) => {
-    if (user.points > 0) setLastUser({
-      ...user,
-      color: '',
-    });
+    if (user.points > 0) {
+      const recorderLastUser = {
+        ...user,
+        color: '',
+      };
+      setLastUser(recorderLastUser);
+      localStorage.setItem('tiktok_crecimiento_user_last', JSON.stringify(recorderLastUser));
+    }
     const newUsers = [{ ...user, color: '' }, ...users];
     setUsers(newUsers);
     setData(newUsers);
@@ -38,6 +52,7 @@ function App() {
     setUsers([]);
     setLastUser(userVoid);
     setData([]);
+    localStorage.clear();
   }
 
   return (

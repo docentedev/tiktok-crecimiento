@@ -8,17 +8,12 @@ const Users = ({ users }: { users: User[] }) => {
     return (
         <div className={styles.users}>
             {users.map((user, index) => (
-                <ListItem disablePadding key={index}>
-                    <ListItemButton>
-                        <ListItemText>
-                            {user.username}
-                        </ListItemText>
-                        <ListItemText style={{
-                            display: 'flex',
-                            justifyContent: 'flex-end',
-                        }} primary={user.points !== 0 ? user.points : <CommentIcon fontSize="small" />} />
-                    </ListItemButton>
-                </ListItem>
+                <div key={index} className={styles.item}>
+                    <div className={styles.username}>
+                        {user.username}
+                    </div>
+                    <div className={styles.icon}>{user.points !== 0 ? user.points : <CommentIcon fontSize="small" />}</div>
+                </div>
             ))}
         </div>
     )
